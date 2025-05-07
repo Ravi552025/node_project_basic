@@ -8,3 +8,10 @@ const api = (dbh) => {
 }
 const inputvalue = "someValue"
 console.log("vnf",api(inputvalue));
+
+const addTwoNumber = (numone, numTwo) => {
+   
+    let sumAll = numone + numTwo;
+    return sumAll
+}
+console.log("sum",addTwoNumber(7, 7));
