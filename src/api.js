@@ -5,7 +5,6 @@ const api = (dbh) => {
         console.log("jknvfd",error);
         
     }
-   
 }
 const inputvalue = "someValue"
 console.log("vnf",api(inputvalue));
