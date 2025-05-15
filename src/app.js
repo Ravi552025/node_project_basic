@@ -1,6 +1,10 @@
-const express = require('express')
-const app = express()
+import express from "express"
+import bodyParser from 'body-parser'
+
+const app = express();
 const port = 15513
+
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     res.send("calling get method in express!")
