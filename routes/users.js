@@ -2,25 +2,17 @@ import express from "express";
 import { v4 as uuidv4 } from 'uuid';
 const router = express.Router();
 
-const user = [];
+// const user = [];
 let users = [
-    {
-    name: "Ravi",
-    age: 23,
-    email: "ravi123@gmail.com"
-},
-{
-    name: 'Singh',
-    age: 44,
-    email: 'singh@123gmail.com'
-}
+   
 ]
 
-router.get("/", (req, res) => {
+
+router.get("/fetchAllUsers", (req, res) => {
     res.send(users)
 })
 
-router.post('/', (req, res) => {
+router.post('/addUser', (req, res) => {
     const user = req.body
     console.log("bvjbfd",user);
 
@@ -29,7 +21,7 @@ router.post('/', (req, res) => {
     res.send(`user ${user.name} has been added successfully!`)
 })
 
-router.get("/:id", (req, res) => {
+router.get("/fetchUser/:id", (req, res) => {
   const { id } = req.params;
   console.log("nvds",id);
   
@@ -37,7 +29,7 @@ router.get("/:id", (req, res) => {
   res.send(foundUser);
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/deleteUser/:id', (req, res) => {
   const { id } = req?.params;
   console.log(">>>>>>>>>",id);
   
@@ -46,18 +38,22 @@ router.delete('/:id', (req, res) => {
   res.send(`${id} has been deleted successfully from record!`)
 })
 
-router.patch('/:id', (req, res) => {
+router.patch('/updateUser/:id', (req, res) => {
+  try {
   const { id } = req.params;
   console.log("ncbds",id);
   const { name, age, email } = req.body;
   console.log("vcxzvc",name,age,email);
-  users = users.find((user) => user.id === id);
+ let user = users.find((user) => user.id === id);
 
   if(name) user.name = name;
   if(age) user.age = age;
   if(email) user.email = email;
 
-  res.send(`user with the ${id} has been updated!`)
+  res.send({hghg})
+} catch (error) {
+   res.send(error.message)    
+}
 })
 
 export default router;
