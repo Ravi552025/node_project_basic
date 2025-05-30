@@ -8,6 +8,7 @@ const port = 15511
 app.use(bodyParser.json());
 app.use('/users', userRoutes);
 
+
 app.get('/', (req, res) => {
     res.send("calling get method in express!")
 })

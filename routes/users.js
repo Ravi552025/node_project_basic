@@ -8,6 +8,7 @@ let users = [
 ]
 
 
+
 router.get("/fetchAllUsers", (req, res) => {
     res.send(users)
 })
@@ -15,8 +16,10 @@ router.get("/fetchAllUsers", (req, res) => {
 router.post('/addUser', (req, res) => {
     const user = req.body
     console.log("bvjbfd",user);
-
-
+    const existingEmail = users.find(u => u.email === user.email)
+    if (existingEmail) {
+      return res.status(400).send("Email already exist!")
+    }
     users?.push({...user, id: uuidv4()})
     res.send(`user ${user.name} has been added successfully!`)
 })
@@ -50,7 +53,7 @@ router.patch('/updateUser/:id', (req, res) => {
   if(age) user.age = age;
   if(email) user.email = email;
 
-  res.send({hghg})
+  res.send(`User ${id} has been updated`)
 } catch (error) {
    res.send(error.message)    
 }
