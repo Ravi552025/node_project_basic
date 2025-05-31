@@ -8,20 +8,26 @@ let users = [
 ]
 
 
-
 router.get("/fetchAllUsers", (req, res) => {
-    res.send(users)
+  res.json({message: users})
 })
 
 router.post('/addUser', (req, res) => {
+  try {
+    
     const user = req.body
+   
     console.log("bvjbfd",user);
     const existingEmail = users.find(u => u.email === user.email)
     if (existingEmail) {
-      return res.status(400).send("Email already exist!")
+      return res.status(409).json({message:"Email already exist!"})
     }
     users?.push({...user, id: uuidv4()})
-    res.send(`user ${user.name} has been added successfully!`)
+    const userData = user.name
+    res.json({message:`user ${userData} has been added successfully!`})
+  } catch (error) {
+    res.send(error.message)
+  }
 })
 
 router.get("/fetchUser/:id", (req, res) => {
@@ -29,7 +35,7 @@ router.get("/fetchUser/:id", (req, res) => {
   console.log("nvds",id);
   
   const foundUser = users?.find((user) => user.id === id);
-  res.send(foundUser);
+  res.json({message:`user fetch ${foundUser} successfully`});
 })
 
 router.delete('/deleteUser/:id', (req, res) => {
