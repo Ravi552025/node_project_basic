@@ -15,3 +15,14 @@ const addTwoNumber = (numone, numTwo) => {
   return sumAll;
 };
 console.log("sum", addTwoNumber(7, 7));
+
+
+const sendResponse = (res, statusCode, data, message) => {
+    res.status(statusCode).json({
+      success: true,
+      message: message,
+      data: data,
+    });
+}
+
+module.exports = {sendResponse};
