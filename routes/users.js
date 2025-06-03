@@ -1,5 +1,7 @@
 import express from "express";
 import { v4 as uuidv4 } from 'uuid';
+import {sendError, sendResponse} from "../src/function.js"
+
 const router = express.Router();
 
 // const user = [];
@@ -9,7 +11,7 @@ let users = [
 
 
 router.get("/fetchAllUsers", (req, res) => {
-  res.json({message: users})
+  return sendResponse(req, res, 200,  users, "user fetch successfully")
 })
 
 router.post('/addUser', (req, res) => {
@@ -20,31 +22,39 @@ router.post('/addUser', (req, res) => {
     console.log("bvjbfd",user);
     const existingEmail = users.find(u => u.email === user.email)
     if (existingEmail) {
-      return res.status(409).json({message:"Email already exist!"})
+      return sendError(req, res, 409, `Email ${user.email} already exist!`)
     }
     users?.push({...user, id: uuidv4()})
-    const userData = user.name
-    res.json({message:`user ${userData} has been added successfully!`})
+    const userData = user;
+    return sendResponse(req, res, 200, userData, 'user has been added successfully!')
   } catch (error) {
-    res.send(error.message)
+    return sendError(req, res, 500, error?.message)
   }
 })
 
 router.get("/fetchUser/:id", (req, res) => {
-  const { id } = req.params;
-  console.log("nvds",id);
-  
-  const foundUser = users?.find((user) => user.id === id);
-  res.json({message:`user fetch ${foundUser} successfully`});
+  try {
+    
+    const { id } = req.params;
+    console.log("nvds",id);
+    
+    const foundUser = users?.find((user) => user.id === id);
+    return sendResponse(req, res, 200, foundUser, 'user fetch successfully')
+  } catch (error) {
+    return sendError(req, res, 500, error.message)
+  }
 })
 
 router.delete('/deleteUser/:id', (req, res) => {
-  const { id } = req?.params;
-  console.log(">>>>>>>>>",id);
-  
-
-  users = users.filter((user) => user.id !== id);
-  res.send(`${id} has been deleted successfully from record!`)
+  try {
+    
+    const { id } = req?.params;
+    console.log(">>>>>>>>>",id);
+    users = users.filter((user) => user.id !== id);
+    return sendResponse(req, res, 200, `${id} has been deleted successfully from record!`)
+  } catch (error) {
+    return sendError(req, res, 500, error.message)
+  }
 })
 
 router.patch('/updateUser/:id', (req, res) => {
@@ -59,9 +69,9 @@ router.patch('/updateUser/:id', (req, res) => {
   if(age) user.age = age;
   if(email) user.email = email;
 
-  res.send(`User ${id} has been updated`)
+  return sendResponse(req, res, 200, id, `User ${id} has been updated`)
 } catch (error) {
-   res.send(error.message)    
+   return sendError(req, res, 500, error.message)    
 }
 })
 

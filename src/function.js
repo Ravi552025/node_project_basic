@@ -17,7 +17,7 @@ const addTwoNumber = (numone, numTwo) => {
 console.log("sum", addTwoNumber(7, 7));
 
 
-const sendResponse = (res, statusCode, data, message) => {
+export const sendResponse = (req, res, statusCode, data, message) => {
     res.status(statusCode).json({
       success: true,
       message: message,
@@ -25,4 +25,9 @@ const sendResponse = (res, statusCode, data, message) => {
     });
 }
 
-module.exports = {sendResponse};
+export const sendError = (req, res, statusCode, message) => {
+  res.status(statusCode).json({
+    success: false,
+    message: message,
+  })
+}
