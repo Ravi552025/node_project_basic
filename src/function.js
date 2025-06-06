@@ -16,11 +16,18 @@ const addTwoNumber = (numone, numTwo) => {
 };
 console.log("sum", addTwoNumber(7, 7));
 
-const sendResponse = (req, res, statusCode, data, message) => {
-    const response = {
-      success: statusCode >= 200  &&  statusCode < 300,
+
+export const sendResponse = (req, res, statusCode, data, message) => {
+    res.status(statusCode).json({
+      success: true,
       message: message,
       data: data,
-    };
-    res.status(statusCode).json(response)
+    });
+}
+
+export const sendError = (req, res, statusCode, message) => {
+  res.status(statusCode).json({
+    success: false,
+    message: message,
+  })
 }
