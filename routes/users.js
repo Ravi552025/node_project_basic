@@ -3,10 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 const router = express.Router();
 
 // const user = [];
-let users = [
-   
-]
-
+let users = [];
 
 router.get("/fetchAllUsers", (req, res) => {
   res.json({message: users})
@@ -31,20 +28,29 @@ router.post('/addUser', (req, res) => {
 })
 
 router.get("/fetchUser/:id", (req, res) => {
-  const { id } = req.params;
-  console.log("nvds",id);
-  
-  const foundUser = users?.find((user) => user.id === id);
-  res.json({message:`user fetch ${foundUser} successfully`});
+  try {
+    
+    const { id } = req.params;
+    console.log("nvds",id);
+    
+    const foundUser = users?.find((user) => user.id === id);
+    res.json({message:`user fetch ${foundUser} successfully`});
+  } catch (error) {
+     res.send(error.message)
+  }
 })
 
 router.delete('/deleteUser/:id', (req, res) => {
-  const { id } = req?.params;
-  console.log(">>>>>>>>>",id);
-  
-
-  users = users.filter((user) => user.id !== id);
-  res.send(`${id} has been deleted successfully from record!`)
+  try {
+    
+    const { id } = req?.params;
+    console.log(">>>>>>>>>",id);
+    users = users.filter((user) => user.id !== id);
+    const data = id;
+    res.send({message:`${data} has been deleted successfully from record!`})
+  } catch (error) {
+    res.send(error.message)
+  }
 })
 
 router.patch('/updateUser/:id', (req, res) => {
@@ -58,8 +64,8 @@ router.patch('/updateUser/:id', (req, res) => {
   if(name) user.name = name;
   if(age) user.age = age;
   if(email) user.email = email;
-
-  res.send(`User ${id} has been updated`)
+  const finalResponse = id;
+  res.json({message:`User ${finalResponse} has been updated`})
 } catch (error) {
    res.send(error.message)    
 }
