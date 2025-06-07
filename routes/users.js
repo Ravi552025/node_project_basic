@@ -1,6 +1,7 @@
 import express from "express";
 import { v4 as uuidv4 } from 'uuid';
-import {sendError, sendResponse} from "../src/function.js"
+import {sendError, sendResponse} from "../src/function.js";
+import {connectToDB} from "../src/function.js"
 
 const router = express.Router();
 
@@ -31,6 +32,21 @@ router.post('/addUser', (req, res) => {
     return sendError(req, res, 500, error?.message)
   }
 })
+
+router.post('/add-user-info', async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const collection = db.collection('user info'); // Your collection
+
+    const user = req.body;
+
+    const result = await collection.insertOne(user);
+    return sendResponse(req, res, 200, result.insertedId);
+  } catch (error) {
+    console.error('Error inserting user:', error);
+    return sendError(req, res, 500, "Failed to add user info" );
+  }
+});
 
 router.get("/fetchUser/:id", (req, res) => {
   try {
