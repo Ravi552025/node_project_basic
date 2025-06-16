@@ -33,15 +33,18 @@ router.post('/addUser', (req, res) => {
 router.post('/add-user-info', async (req, res) => {
   try {
     const db = await connectToDB();
-    const collection = db.collection('user info'); // Your collection
+    const collection = db.collection('user info');
+    console.log("jhkjhkj", db);
+    console.log("nfbbds", collection);
+    
 
     const user = req.body;
-
-    const result = await collection.insertOne(user);
-    return sendResponse(req, res, 200, result.insertedId);
+    
+    const result = await collection.insertMany(user);
+    return sendResponse(req, res, 200, result.insertedIds, "Data inserted successfully!");
   } catch (error) {
     console.error('Error inserting user:', error);
-    return sendError(req, res, 500, "Failed to add user info" );
+    return sendError(req, res, 500, error?.message);
   }
 });
 
