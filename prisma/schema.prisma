@@ -7,6 +7,3 @@ datasource db {
 }
 
 
-model user info {
-
-}

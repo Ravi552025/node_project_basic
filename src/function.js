@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { PrismaClient } from "@prisma/client";
 
 
 // const uri = 'mongodb://ravis681299:96LAG5eCEWF6jcAB@cluster0-shard-00-00.nsfqg.mongodb.net:27017,cluster0-shard-00-01.nsfqg.mongodb.net:27017,cluster0-shard-00-02.nsfqg.mongodb.net:27017/uvotake?ssl=true&replicaSet=atlas-nsfqg-shard-0&authSource=admin';
@@ -7,7 +7,7 @@ import { MongoClient } from "mongodb";
 
 // console.log("bcjdf", uri);
 
-export const client = new MongoClient(process.env.DATABASE_URL)
+export const client = new PrismaClient(process.env.DATABASE_URL)
 
 export async function connectToDB() {
   if (!client.topology || !client.topology.isConnected()) {

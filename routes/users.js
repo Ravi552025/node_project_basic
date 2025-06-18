@@ -33,11 +33,10 @@ router.post('/addUser', (req, res) => {
 router.post('/add-user-info', async (req, res) => {
   try {
     const db = await connectToDB();
-    const collection = db.collection('user info');
+    const collection = db.collection('user_info');
     console.log("jhkjhkj", db);
     console.log("nfbbds", collection);
     
-
     const user = req.body;
     
     const result = await collection.insertMany(user);
