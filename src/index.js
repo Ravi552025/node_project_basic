@@ -1,12 +1,12 @@
 import express from "express"
 import bodyParser from 'body-parser'
-import userRoutes from "../routes/users.js"
+import userRoutes from "../routes/app.js"
 
 const app = express();
 const port = 15511
 
 app.use(bodyParser.json());
-app.use('/users', userRoutes);
+app.use('/app', userRoutes);
 
 
 app.get('/', (req, res) => {

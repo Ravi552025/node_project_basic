@@ -7,14 +7,8 @@ import { PrismaClient } from "@prisma/client";
 
 // console.log("bcjdf", uri);
 
-export const client = new PrismaClient(process.env.DATABASE_URL)
+export const prisma = new PrismaClient()
 
-export async function connectToDB() {
-  if (!client.topology || !client.topology.isConnected()) {
-    await client.connect();
-  }
-  return client.db('myDB');
-}
 
 export const sendResponse = (req, res, statusCode, data, message) => {
     res.status(statusCode).json({
