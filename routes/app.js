@@ -29,12 +29,38 @@ router.post('/addUser', (req, res) => {
   }
 })
 
+router.get('/getUsers', async(req, res) => {
+  try {
+    const users = await prisma.user_info.findMany()
+
+    return sendResponse(req, res, 200, users, 'All user fetch successfully')
+  } catch (error) {
+    return sendError(req, res, 500, error?.message)
+  }
+})
+
+router.get('get-user-data/:userId', async(req, res) => {
+  try {
+    const {userId} = req?.params
+   const fetchUser = await prisma.user_info.findFirst({
+    where: {
+      id: userId
+    }
+   })
+   return sendResponse(req, res, 200, fetchUser, 'user fetch successfully' )
+  } catch (error) {
+    return sendError(req, res, 500, error.message)
+  }
+})
+
 router.post('/add-user-info', async (req, res) => {
   try {
 
-    const user = req?.body;
     
-    const result = await prisma.user_info.create({data: user});
+    const result = await prisma.user_info.create({
+      data: req.body
+        
+    });
     return sendResponse(req, res, 200, result, "Data inserted successfully!");
   } catch (error) {
     console.error('Error inserting user:', error);
