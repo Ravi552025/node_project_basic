@@ -1,8 +1,7 @@
 import express from "express";
 import { v4 as uuidv4 } from 'uuid';
-import {sendError, sendResponse} from "../src/function.js";
-import prisma from "../src/function"
-
+import {sendError, sendResponse, prisma} from "../src/function.js";
+import { Prisma } from "@prisma/client";
 const router = express.Router();
 
 // const user = [];
@@ -33,10 +32,10 @@ router.post('/addUser', (req, res) => {
 router.post('/add-user-info', async (req, res) => {
   try {
 
-    const user = req.body;
+    const user = req?.body;
     
-    const result = await prisma.user_info.create(user);
-    return sendResponse(req, res, 200, result.insertedIds, "Data inserted successfully!");
+    const result = await prisma.user_info.create({data: user});
+    return sendResponse(req, res, 200, result, "Data inserted successfully!");
   } catch (error) {
     console.error('Error inserting user:', error);
     return sendError(req, res, 500, error?.message);

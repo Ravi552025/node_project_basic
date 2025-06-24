@@ -8,5 +8,7 @@ datasource db {
 }
 
 model user_info {
+
   id String @id @default(auto()) @map("_id") @db.ObjectId
+  
 }
