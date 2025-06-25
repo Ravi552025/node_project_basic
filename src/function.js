@@ -7,7 +7,7 @@ import { PrismaClient } from "@prisma/client";
 
 // console.log("bcjdf", uri);
 
-export const prisma = new PrismaClient()
+export const prisma = new PrismaClient();
 
 
 export const sendResponse = (req, res, statusCode, data, message) => {

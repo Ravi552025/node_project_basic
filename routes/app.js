@@ -1,7 +1,7 @@
 import express from "express";
 import { v4 as uuidv4 } from 'uuid';
 import {sendError, sendResponse} from "../src/function.js";
-import prisma from "../src/function"
+import { prisma } from "../src/function.js";
 
 const router = express.Router();
 
@@ -32,16 +32,95 @@ router.post('/addUser', (req, res) => {
 
 router.post('/add-user-info', async (req, res) => {
   try {
-
-    const user = req.body;
     
-    const result = await prisma.user_info.create(user);
-    return sendResponse(req, res, 200, result.insertedIds, "Data inserted successfully!");
+    const result = await prisma.user_info.create({
+      data: req.body
+    });
+    
+    return sendResponse(req, res, 200, result, "Data inserted successfully!");
   } catch (error) {
     console.error('Error inserting user:', error);
     return sendError(req, res, 500, error?.message);
   }
 });
+
+router.get('/getUsers', async(req, res) => {
+  const users = await prisma.user_info.findMany();
+
+  return sendResponse(req, res, 200, users, "User Fetch Successfully")
+})
+
+router.get('/getUserInfo/:userId', async(req, res) => {
+  console.log("nbfdbsjkfbkjdsb");
+  
+  try {
+    
+ 
+  const { userId } = req.params;
+
+  const user = await prisma.user_info.findFirst({
+    where:{
+      id: userId
+    }
+  })
+  console.log("fdfds",user);
+  
+
+  return sendResponse(req, res, 200, user, "Data fetched successfully")
+   } catch (error) {
+    console.log("dsfdsdsfvdc",error);
+    
+     return sendError(req, res, 500, error.message)
+  }
+})
+
+router.delete('/deleteUser/:userId', async(req, res) => {
+  const {userId} = req.params
+  try {
+    const user = await prisma.user_info.findFirst({
+      where: {
+        id: userId
+      }
+    })
+    if (!user) {
+      return sendError(req, res, 401, 'User not found!')
+    }
+   const deletedRecord = await prisma.user_info.delete({
+         where: {
+          id: userId
+         }
+    })
+    return sendResponse(req, res, 200, deletedRecord, 'User deleted successfully!')
+
+  } catch (error) {
+     return sendError(req, res, 500, error.message)
+  }
+})
+
+router.patch('/updateUserData/:userId', async(req, res) => {
+  const {userId} = req.params
+  try {
+    const user = await prisma.user_info.findFirst({
+      where: {
+        id: userId
+      }
+     
+    })
+     if (!user) {
+       return sendError(req, res, 404, 'User not found') 
+      }
+      const updateUser = await prisma.user_info.update({
+        where: {
+          id: userId
+        },
+        data: req?.body
+      })
+      return sendResponse(req, res, 200, updateUser, "user record updated successfully")
+    
+  } catch (error) {
+    return sendError(req, res, 500, error?.message)
+  }
+})
 
 router.get("/fetchUser/:id", (req, res) => {
   try {
